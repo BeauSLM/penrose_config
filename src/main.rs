@@ -7,8 +7,9 @@ use penrose::{
         config::Config,
         helpers::index_selectors,
         // manager::WindowManager,
-        layout::{left_stack, monocle, Layout, LayoutConf}
+        layout::{monocle, Layout, LayoutConf}
     },
+    contrib::layouts::left_stack,
     logging_error_handler,
     xcb::new_xcb_backed_window_manager,
     Backward, Forward, Less, More, Selector
