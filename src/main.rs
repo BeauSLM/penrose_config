@@ -28,7 +28,7 @@ fn main() -> penrose::Result<()> {
     
     // run startup script
     // QUESTION: should this be a hook? I didn't see the point
-    spawn!("/home/beaum/.config/startup.sh")?;
+    spawn!(env!("HOME").to_owned() + "/.config/startup.sh")?;
 
     let config = Config::default()
         .builder()
