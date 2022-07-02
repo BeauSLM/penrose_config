@@ -32,6 +32,7 @@ fn main() -> penrose::Result<()> {
 
     let config = Config::default()
         .builder()
+        .focused_border("#948AE3")?
         .workspaces(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
         .layouts(vec![
             Layout::new(TILE_SYMBOL, LayoutConf::default(), left_stack, N_MAIN, RATIO),
