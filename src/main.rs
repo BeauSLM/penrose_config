@@ -3,16 +3,14 @@ extern crate penrose;
 
 use penrose::{
     core::{
-        // bindings::KeyEventHandler,
         config::Config,
         helpers::index_selectors,
-        // manager::WindowManager,
         layout::{monocle, Layout, LayoutConf}
     },
     contrib::layouts::left_stack,
     logging_error_handler,
     xcb::new_xcb_backed_window_manager,
-    Backward, Forward, Less, More, Selector
+    Backward, Forward, Less, More, Selector, WindowManager
 };
 
 // imports from lib.rs
@@ -56,7 +54,7 @@ fn main() -> penrose::Result<()> {
         "M-k" => run_internal!(cycle_client, Backward);
         "M-S-j" => run_internal!(drag_client, Forward);
         "M-S-k" => run_internal!(drag_client, Backward);
-        "M-f" => run_internal!(toggle_client_fullscreen, &Selector::Focused);
+        "M-S-f" => run_internal!(toggle_client_fullscreen, &Selector::Focused);
         "M-q" => run_internal!(kill_client);
         
         // screen cycle
@@ -69,9 +67,18 @@ fn main() -> penrose::Result<()> {
         "M-comma" => run_internal!(cycle_workspace, Backward);
 
         // Layout management
-        // TODO: pick specific layout keybinds
-        "M-grave" => run_internal!(cycle_layout, Forward);
-        "M-S-grave" => run_internal!(cycle_layout, Backward);
+        "M-t" => Box::new(|wm: &mut WindowManager<_>| {
+            wm.active_workspace_mut().try_set_layout(TILE_SYMBOL);
+            wm.layout_screen(wm.active_screen_index())
+        });
+        "M-m" => Box::new(|wm: &mut WindowManager<_>| {
+            wm.active_workspace_mut().try_set_layout(MONO_SYMBOL);
+            wm.layout_screen(wm.active_screen_index())
+        });
+        "M-f" => Box::new(|wm: &mut WindowManager<_>| {
+            wm.active_workspace_mut().try_set_layout(FLOAT_SYMBOL);
+            wm.layout_screen(wm.active_screen_index())
+        });
         "M-i" => run_internal!(update_max_main, More);
         "M-d" => run_internal!(update_max_main, Less);
         "M-S-h" => run_internal!(update_main_ratio, More);
